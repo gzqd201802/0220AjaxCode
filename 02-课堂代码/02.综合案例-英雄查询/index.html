@@ -142,6 +142,10 @@
     //     2.2 在 $.ajaxSetup() 添加全局回调函数
     //     2.3 发送请求前 显示加载条
     //     2.4 发送完成后 隐藏加载条
+    //  3. 点击搜索按钮查询英雄
+    //     3.1 获取到搜索按钮，并注册点击事件
+    //     3.2 获取搜索输入框的内容
+    //     3.3 ajax 发请求获取数据，并通过模板引擎，重新渲染页面
 
     // 在 $.ajaxSetup() 添加全局回调函数
     $.ajaxSetup({
@@ -152,26 +156,45 @@
       },
       // 发送完成后
       complete: function(){
+        // 隐藏加载条
         NProgress.done();
       }
     });
 
-    $.ajax({
-      type:'get',
-      url:'https://autumnfish.cn/api/cq',
-      data:{
-        query:''
-      },
-      success:function(res){
-        // console.log(res);
-        const htmlStr = template('hero', res);
-        $('.row').html(htmlStr);
-      }
+    // 因为显示所有和英雄查询都是同一个接口，只是参数不一样而已，所以封装起来
+    function render(query){
+      $.ajax({
+        type:'get',
+        url:'https://autumnfish.cn/api/cq',
+        data:{
+          query:query
+        },
+        success:function(res){
+          // console.log(res);
+          const htmlStr = template('hero', res);
+          $('.row').html(htmlStr);
+        }
+      });
+    }
+    render('');
+
+    // 3. 点击搜索按钮查询英雄
+    // 3.1 获取到搜索按钮，并注册点击事件
+    $('.btn-search').click(function(event){
+      // 阻止按钮的默认行为
+      event.preventDefault();
+      // 3.2 获取搜索输入框的内容
+      const str = $('.input-search').val().trim();
+      // 3.3 ajax 发请求获取数据，并通过模板引擎，重新渲染页面
+      render(str);
     });
 
-    // 重点：
-    //    1.  jQuery 的 $.ajax()
-    //    2. art-template 模板引擎
+    // 重点注意：
+    //    1.  jQuery 的 $.ajax() 发送请求
+    //    2.  art-template 模板引擎 {{ each }} 遍历
+    //    3.  $.ajaxSetup() 实现加载进度条
+    //    4.  阻止搜索按钮默认提交行为， event.preventDefault();
+    //    5.  两个功能，接口地址一样，功能一样，只是参数不一样而已，所以封装起来（优化）
 
   });
 </script>
