@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 1. 引入 jQuery  -->
+    <script src="./libs/jquery-1.12.4.js"></script>
+    <script>
+        // 目标：jQuery 内部也封装了 ajax 的功能，学习 jQuery 的 ajax 功能
+
+        // 接口文档：
+        //  获取多条随机笑话
+        //    随机获取笑话的接口
+        //    请求地址：https://autumnfish.cn/api/joke/list
+        //    请求方法：get
+        //    请求参数：num
+
+        // 用户验证 - 验证用户名是否可用
+        //    请求地址：https://autumnfish.cn/api/user/check
+        //    请求方法：post
+        //    请求参数：username
+
+        $.ajax({
+            type: 'get',
+            url: 'https://autumnfish.cn/api/joke/list',
+            data: 'num=1',
+            success: function (res) {
+                console.log(res);
+            }
+        });
+
+
+        $.ajax({
+            type: 'post',
+            url: 'https://autumnfish.cn/api/user/check',
+            data: 'username=王小明',
+            success: function (res) {
+                console.log(res);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

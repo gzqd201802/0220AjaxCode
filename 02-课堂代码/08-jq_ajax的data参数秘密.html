@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // 发送的 data 格式：key=value&key2=value2
+        // jQuery 的 data 格式：{ key: value, key2: value2 }
+
+        // 聊天机器人需要传递两个参数
+        // 请求地址：http://www.tuling123.com/openapi/api
+        // 请求方法：post
+        // 请求参数：key,info
+        // key: d41e90126d5441a1ba4e9c15a709c8bf
+
+        // 原生无封装的写法
+        const xhr = new XMLHttpRequest();
+        xhr.open('post', 'http://www.tuling123.com/openapi/api');
+        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+        xhr.send(`key=d41e90126d5441a1ba4e9c15a709c8bf&info=你好`);
+        xhr.onload = function () {
+            console.log(JSON.parse(xhr.responseText));
+        }
+
+        // JQ 的 ajax 写法
+        $.ajax({
+            type: 'post',
+            url: 'http://www.tuling123.com/openapi/api',
+            // data 的参数可以写成对象的格式 - 内部把对象处理成字符串
+            data: {
+                key: 'd41e90126d5441a1ba4e9c15a709c8bf',
+                info: $('input').val()
+            },
+            success: function (res) {
+                console.log(res);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

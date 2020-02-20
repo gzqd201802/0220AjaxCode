@@ -49,7 +49,7 @@
             const xhr = new XMLHttpRequest();
             // 2. 只有 get 需要把参数拼接到 url 中，判断处理 get 情况即可
             if (type === 'get') {
-                url += `?${data}`
+                url += `?${data}`;
             }
             // type 为请求方式
             xhr.open(type, url);
