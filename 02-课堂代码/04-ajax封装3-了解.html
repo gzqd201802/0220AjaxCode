@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // !! 目标1：用一个 ajax 方法，实现 get 和 post 
+        //    目标2：化简 open() 和 send()
+        // 当前目标3：把多个参数变成对象方式 - (了解)
+
+        // 参数说明：
+        //    1. type 请求方式 type
+        //    2. url 请求地址 
+        //    3. data 请求参数 
+        //    4. fn 回调函数内部的业务代码
+
+        function ajax(obj) {
+            // 由于传入的是对象 - 之前的数据需要从对象中通过点语法获取
+            let type = obj.type || 'get';  // 甚至可以用 || 设置默认值
+            let url = obj.url;
+            let data = obj.data;
+            let fn = obj.success;
+
+            // 1. new 创建ajax对象 小黄人对象
+            const xhr = new XMLHttpRequest();
+            // 2. 只有 get 需要把参数拼接到 url 中，判断处理 get 情况即可
+            if (type === 'get') {
+                url += `?${data}`
+            }
+            // type 为请求方式
+            xhr.open(type, url);
+
+            // 3. post 在 send() 中传递参数
+            //  补充：get 不需要传参的时候可以设置默认值 null
+            let myDate = null;
+            if (type === 'post') {
+                xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+                myDate = data;
+            }
+            // 都要 send 发送，get 的时候发送默认值 null
+            xhr.send(myDate);
+
+            // 4. 不管  get 和 post 都要注册回调函数
+            xhr.onload = function () {
+                fn(xhr.responseText);
+            }
+        }
+        
+        // 传入对象 - 使用的时候更加友好
+        ajax({
+            url: 'https://autumnfish.cn/api/joke/list',
+            type: 'get',
+            data: 'num=1',
+            success: function (res) {
+                console.log(JSON.parse(res));
+            }
+        });
+
+
+        // 把多个参数变成对象方式 - (了解)：
+        //   ajax方法重新封装后，主要有以下优点：
+        //      1. 使用时候，传入对象，对象有键名称，语义更好。
+        //      2. 对象的参数书写无需注意先后顺序
+        //   
+        
+
+        // 接口文档
+        //  获取多条随机笑话
+        //    随机获取笑话的接口
+        //    请求地址：https://autumnfish.cn/api/joke/list
+        //    请求方法：get
+        //    请求参数：num
+
+
+    </script>
+</body>
+
+</html>

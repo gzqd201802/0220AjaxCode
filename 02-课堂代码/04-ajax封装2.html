@@ -33,9 +33,10 @@
         //   5. onload 注册回调函数
 
 
-       
 
-        // !! 目标：用一个 ajax 方法，实现 get 和 post 
+
+        // !! 目标1：用一个 ajax 方法，实现 get 和 post 
+        //    目标2：化简 open() 和 send()
 
         // 参数说明：
         //    1. type 请求方式 type
@@ -46,21 +47,23 @@
         function ajax(type, url, data, fn) {
             // 1. new 创建ajax对象 小黄人对象
             const xhr = new XMLHttpRequest();
-            // 2. 由于 type 类型不一的时候，参数书写位置也不一样，通过判断实现
+            // 2. 只有 get 需要把参数拼接到 url 中，判断处理 get 情况即可
             if (type === 'get') {
-                xhr.open('get', `${url}?${data}`);
-            } else if (type === 'post') {
-                xhr.open('post', `${url}`);
+                url += `?${data}`
+            }
+            // type 为请求方式
+            xhr.open(type, url);
+
+            // 3. post 在 send() 中传递参数
+            //  补充：get 不需要传参的时候可以设置默认值 null
+            let myDate = null;
+            if(type === 'post'){
                 xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+                myDate = data;
             }
-            // 3. 不管 get 和 post 都要 send
-            //    但是 post 需要设置请求头。
-            //         post 在 send() 中传递参数
-            if (type === 'get') {
-                xhr.send();
-            } else if (type === 'post') {
-                xhr.send(data);
-            }
+            // 都要 send 发送，get 的时候发送默认值 null
+            xhr.send(myDate);
+
             // 4. 不管  get 和 post 都要注册回调函数
             xhr.onload = function () {
                 fn(xhr.responseText);
@@ -83,13 +86,17 @@
                 // console.log(res);
                 const obj = JSON.parse(res);
                 console.log(obj);
-            });
+            }
+        );
 
-
-
-
-
-
+        ajax(
+            'post',
+            'https://autumnfish.cn/api/user/check',
+            'username=吴彦祖',
+            function(res){
+                console.log(res);
+            }
+        );
 
         //  获取多条随机笑话
         //    随机获取笑话的接口
@@ -101,12 +108,6 @@
         // 请求地址：https://autumnfish.cn/api/user/check
         // 请求方法：post
         // 请求参数：username
-
-
-
-
-
-
 
     </script>
 </body>
