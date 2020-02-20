@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 压缩工具主要干了什么事情：
+      //    1. 去除注释
+      //    2. 去掉换行符，空格
+      //    3. 缩短局部变量的变量名
+
+      //  该例子中局部变量名主要包含：
+      //    1. 自调用函数形参 window
+      //    2. let 声明的 version 变量名
+      //    3. function 声明的 jQuery 函数名
+      //    4. jQuery 函数形参 selector
+
+      // (function(window){
+      //     let version = '1.0.0';
+      //     function jQuery(selector){
+      //         console.log('jQuery函数运行了，传入选择器为',selector);
+      //     }
+      //     jQuery.version = version;
+      //     window.$ = window.jQuery = jQuery;
+      // })(window);
+
+      (function(a) {
+        let b = "1.0.0";
+        function c(d) {
+          console.log("jQuery函数运行了，传入选择器为", d);
+        }
+        c.version = b;
+        a.$ = a.jQuery = c;
+      })(window);
+
+      // (function(a){let b='1.0.0';function c(){console.log('jQuery函数运行了，传入选择器为',d)}c.version=b;a.$=a.jQuery=c})(window);
+
+      console.dir($);
+      console.dir(jQuery);
+      $("div");
+    </script>
+  </body>
+</html>
