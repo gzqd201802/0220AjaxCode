@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./libs/jquery-1.12.4.js"></script>
+    <script>
+
+        // 目标：学习 $.ajax() 常用配置 和 其他的可选配置
+
+
+        // JQ 的 ajax 写法
+        $.ajax({
+            // type / method 都是请求方式
+            type: 'post',
+            // method: 'post',
+            // url 请求地址
+            url: 'http://www.tuling123.com/openapi/api',
+            // data 请求参数
+            data: {
+                key: 'd41e90126d5441a1ba4e9c15a709c8bf',
+                info: $('input').val()
+            },
+            // dataType:'json',
+            // success 成功的回调函数，res 是 response 的缩写
+            //  JQ 内部对服务器返回的数据自动进行检测，如 json字符串自动转成对象，xml 自动转换成 DOM 对象
+            success: function (res) {
+                console.log(res);
+            }
+        });
+
+
+        // 获取 xml 格式菜单
+        // 请求地址：https://autumnfish.cn/api/food.xml
+        // 请求方法：get
+        // 请求参数：无
+
+        $.ajax({
+            // 默认值为 get，所以可以省略掉
+            // type:'get',
+            url:'https://autumnfish.cn/api/food.xml',
+            // dataType:'json',
+            success:function(res){
+                // 之前的 XML 字符串，JQ 自动转换成 DOM 对象
+                console.log(res);
+                // 遍历 DOM 对象
+                $(res).find('food').each(function(index,item){
+                    $('body').append(
+                        `<li>
+                            ${ $(item).children('name').text() }    
+                        </li>`
+                    );
+                });
+            }
+        })
+
+
+    </script>
+</body>
+</html>

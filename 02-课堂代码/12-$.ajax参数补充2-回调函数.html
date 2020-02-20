@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./libs/jquery-1.12.4.js"></script>
+    <script>
+
+        // 目标：学习 $.ajax() 4个回调函数
+
+
+        // JQ 的 ajax 写法
+        $.ajax({
+            type: 'post',
+            url: 'http://www.tuling123.com/openAsdasdapi/apiaasdasda',
+            data: {
+                key: 'd41e90126d5441a1ba4e9c15a709c8bf',
+                info: $('input').val()
+            },
+            beforeSend:function(){
+                console.log('请求发送前','加载中...');
+            },
+            success: function (res) {
+                console.log('获取成功', res);
+            },
+            error: function (err) {
+                console.log('获取失败',err);
+            },
+            complete: function (e) {
+                console.log('完成，不管成功失败最后都会执行',e);
+            }
+        });
+
+        // 重点总结：
+        //      1. beforeSend 在请求发送前自动触发，常用于 加载提示。
+        //      2. success 在请求成功后自动触发，最常用。
+        //      3. error 在请求失败后自动触发，用于处理错误。
+        //      4. complete 在请求完成(结束)自动触发，不管成功或失败都触发。
+        //      5. success 和 error 只会触发其中一个。
+
+
+
+
+
+    </script>
+</body>
+</html>

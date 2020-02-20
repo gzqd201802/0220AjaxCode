@@ -36,16 +36,19 @@
         }
 
         function objToStr(obj){
+            // 准备一个数组
             let arr = [];
-            // 遍历 obj 对象
+            // for in 遍历 obj 对象
+            // k 是键名，k为字符串格式，所以需要通过 obj[k] 访问到值
             for (let k in obj) {
+                // 把参数键和值用等号拼起来，加入到数组中
                 arr.push(`${k}=${obj[k]}`);
             }
             // 参数与参数之间用 & 符号分隔
             return arr.join('&');
         }
         
-
+        // 调用后，把对象拼接成字符串
         console.log(objToStr(obj));
         console.log(objToStr(obj2));
         
