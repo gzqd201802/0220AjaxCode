@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        
+        // 封装小结：
+        //     其实 ajax 写法都差不多，主要是以下几部分的变化:
+        //      1. 请求方式
+        //      2. 请求地址
+        //      3. 请求参数
+        //      4. 回调函数内部的业务代码！！！！！！
+        //  封装主要就是考虑以上 4 点。
+
+
+        // get 请求：
+        //   1. new 创建ajax对象 小黄人对象
+        //   2. open 设置 请求的方法 和请求的地址 (传递参数)
+        //   3. send 发送请求
+        //   4. onload 注册回调函数
+
+        // post 请求：
+        //   1. new 创建ajax对象 小黄人对象
+        //   2. open 设置 请求的方法 和请求的地址
+        //   3. 设置请求头(post请求需要)
+        //   4. send 发送请求，(传递参数)
+        //   5. onload 注册回调函数
+
+
+        // 重点总结：
+        // get 请求和 post 请求主要区别：
+        //      1. 传递参数书写位置不一样
+        //      2. post 请求需要设置请求头
+
+
+
+        // 用一个对象统一管理起来 get 和 post 两个功能
+        const heima = {
+            author: '黑马程序员',
+            get: function (url, data, fn) {
+                // 1. new 创建ajax对象 小黄人对象
+                const xhr = new XMLHttpRequest();
+                // 2. open 设置 请求的方法 和请求的地址
+                xhr.open('get', `${url}?${data}`);
+                // 3. send 发送请求
+                xhr.send();
+                // 4. onload 注册回调函数
+                xhr.onload = function () {
+                    // console.log(xhr.responseText);
+                    // 把 xhr.responseText 作为函数调用的实参
+                    fn(xhr.responseText);
+                }
+            },
+            post: function (url, data, fn) {
+                // 1. new 创建ajax对象 小黄人对象
+                const xhr = new XMLHttpRequest();
+                // 2. open 设置 请求的方法 和请求的地址
+                xhr.open('post', url);
+                // 3. 设置请求头(固定写法)
+                xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+                // 4. send 发送请求
+                xhr.send(data);
+                // 5. onload 注册回调函数
+                xhr.onload = function () {
+                    // console.log(xhr.responseText);
+                    // 调用函数并传递实参
+                    fn(xhr.responseText);
+                }
+            }
+        }
+
+        //  获取多条随机笑话
+        //    随机获取笑话的接口
+        //    请求地址：https://autumnfish.cn/api/joke/list
+        //    请求方法：get
+        //    请求参数：num
+
+        // 用户验证 - 验证用户名是否可用
+        // 请求地址：https://autumnfish.cn/api/user/check
+        // 请求方法：post
+        // 请求参数：username
+
+        // 测试 get 的封装
+        heima.get('https://autumnfish.cn/api/joke/list', `num=${2}`, function (res) {
+            console.log('get成功', res);
+        });
+
+        // 测试 post 的封装
+        heima.post('https://autumnfish.cn/api/user/check', `username=小明`, function (res) {
+            console.log('post成功', res);
+        })
+
+
+
+
+
+    </script>
+</body>
+
+</html>
