@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .loading {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
+    <img class="loading" src="./img/loading.gif" alt="">
+    <div class="box"></div>
     <script src="./libs/jquery-1.12.4.js"></script>
     <script>
 
-        // 目标：学习 $.ajax() 4个回调函数
+        // 目标：通过 $.ajax() 的回调函数，实现请求前显示 loading 图，请求结束后隐藏 loading 图
 
         // JQ 的 ajax 写法
         $.ajax({
@@ -20,17 +29,20 @@
                 info: $('input').val()
             },
             // 回调函数 - ajax 某个阶段自动触发某个函数
-            beforeSend:function(){
-                console.log('请求发送前','加载中...');
+            beforeSend: function () {
+                // console.log('请求发送前','加载中...');
+                $('.loading').show();
             },
             success: function (res) {
-                console.log('获取成功', res);
+                // console.log('获取成功', res);
+                $('.box').html(res.text);
             },
             error: function (err) {
-                console.log('获取失败',err);
+                console.log('获取失败', err);
             },
             complete: function (e) {
-                console.log('完成，不管成功失败最后都会执行',e);
+                // console.log('完成，不管成功失败最后都会执行',e);
+                $('.loading').hide();
             }
         });
 
@@ -47,4 +59,5 @@
 
     </script>
 </body>
+
 </html>
